@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane fx:id="base" hgap="10.0" prefHeight="720" prefWidth="1280" vgap="10.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="50.0" />
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="50.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints percentHeight="50.0" vgrow="SOMETIMES" />
+        <RowConstraints percentHeight="50.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <VBox alignment="TOP_CENTER" style="-fx-border-color: Gainsboro; -fx-border-insets: 0; -fx-border-width: 2; -fx-border-radius: 10;" GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <Label fx:id="timer" text="0:00.0">
+         <font>
+            <Font name="System Bold" size="128.0" />
+         </font>
+        </Label>
+        <AnchorPane fx:id="currentRunnerPane" prefHeight="150.0">
+         <VBox.margin>
+            <Insets left="10.0" right="10.0" />
+         </VBox.margin></AnchorPane>
+        <AnchorPane>
+            <Button fx:id="runButton" onAction="#startNextRunner" text="RUN" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10" />
+        </AnchorPane>
+    </VBox>
+    <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <VBox fx:id="runnerTextPane">
+        </VBox>
+        <AnchorPane fx:id="addToQueuePane">
+            <HBox AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="10" >
+                <Button text="Selecteer database" onAction="#selectDatabase" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button text="Nieuwe database" onAction="#newDatabase" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+            </HBox>
+        </AnchorPane>
+    </VBox>
+    <AnchorPane fx:id="previousLapsPane" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <AnchorPane fx:id="runnerQueuePane" GridPane.columnIndex="1" GridPane.rowIndex="1">
+
+    </AnchorPane>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+
+</GridPane>
