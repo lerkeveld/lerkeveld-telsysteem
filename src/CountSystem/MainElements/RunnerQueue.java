@@ -1,34 +1,37 @@
+package CountSystem.MainElements;
+
+import CountSystem.supportElements.QueuedRunner;
+import CountSystem.supportElements.Runner;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.util.Collections;
 import java.util.LinkedList;
 
-public class RunnerQueue {
+public class RunnerQueue extends ScrollPane {
     private VBox queue = new VBox();
     private LinkedList<QueuedRunner> runners = new LinkedList<>();
 
-    public RunnerQueue(Pane parent) {
-        ScrollPane scrollPane = new ScrollPane();
-        parent.getChildren().setAll(scrollPane);
-        scrollPane.prefHeightProperty().bind(parent.heightProperty());
-        scrollPane.prefWidthProperty().bind(parent.widthProperty());
-        scrollPane.setFitToWidth(true);
+    public RunnerQueue() {
+        super();
 
+        // ScrollPane layout
+        setFitToWidth(true);
+        setContent(queue);
+
+        // VBox layout
         queue.setAlignment(Pos.TOP_CENTER);
-        scrollPane.setContent(queue);
     }
 
 
     public void add(Runner runner) {
         QueuedRunner queuedRunner = new QueuedRunner(runner, this);
         runners.add(queuedRunner);
-        queuedRunner.addToParent(queue);
-        runner.scale(0.8);
+        queue.getChildren().add(queuedRunner);
     }
 
     public int size() {
@@ -36,6 +39,8 @@ public class RunnerQueue {
     }
 
     public Runner pop() {
+        // returns null if no runner is present
+        if (size()==0) return null;
         queue.getChildren().remove(0);
         runners.forEach(QueuedRunner::advance);
         return runners.pop().getRunner();
