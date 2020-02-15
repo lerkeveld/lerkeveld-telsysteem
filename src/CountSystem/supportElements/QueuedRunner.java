@@ -8,17 +8,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-
+// wrapper around a runner to indicate its position in the queue
+// and allow it to move up/down in the queue or get removed from it
 public class QueuedRunner extends HBox {
     private int position;
     private Runner runner;
     private Label label = new Label("0");
 
     public QueuedRunner(Runner runner, RunnerQueue queue) {
+        // set layout
         setAlignment(Pos.CENTER_LEFT);
         runner.prefWidthProperty().bind(widthProperty().subtract(label.widthProperty().multiply(4).divide(3)));
         runner.scale(0.8);
 
+        // add the queue position indicator
         this.position = queue.size() + 1;
         getChildren().add(label);
         label.setText(Integer.toString(position));
@@ -28,11 +31,14 @@ public class QueuedRunner extends HBox {
         label.minWidthProperty().bind(heightProperty());
         label.setStyle("-fx-border-color: grey; -fx-border-insets: 0; -fx-border-width: 2; -fx-border-radius: 10;");
 
+        // add the runner
         getChildren().add(runner);
         this.runner = runner;
 
+        // laqd the font used for the arrows and delete character
         Font.loadFont(this.getClass().getClassLoader().getResource("fa-solid-900.ttf").toExternalForm(), 12);
 
+        // setup the arrows and delete button
         VBox buttons = new VBox();
         Button up = new Button("\uf077");
         up.setOnAction(event -> queue.moveUp(this));
@@ -49,18 +55,20 @@ public class QueuedRunner extends HBox {
         getChildren().add(buttons);
     }
 
+    // decrease the queue position indicator
     public void advance() {
         label.setText(Integer.toString(--position));
     }
 
+    // increase the queue position indicator
     public void decline() {
         label.setText(Integer.toString(++position));
     }
 
-    public Runner getRunner() {
-        return runner;
-    }
+    // get the runner wrapped in this QueuedRunner
+    public Runner getRunner() { return runner; }
 
+    // get the position of this Queued runner in its queue
     public int getPosition() {
         return position;
     }

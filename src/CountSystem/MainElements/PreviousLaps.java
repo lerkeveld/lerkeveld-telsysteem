@@ -6,9 +6,10 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-// todo auto scaling of elements
+// keeps track of the last N laps
 public class PreviousLaps extends VBox {
 
+    public static final int N = 3;
     private double verticalPadding = 0;
     private double horizontalPadding = 0;
     private double verticalSpacing = 0;
@@ -28,21 +29,22 @@ public class PreviousLaps extends VBox {
         // set runner layout
         getChildren().forEach(node -> {
             ((Runner) node).prefWidthProperty().bind(widthProperty().subtract(2 * horizontalPadding));
-            ((Runner) node).prefHeightProperty().bind(heightProperty().subtract(2 * verticalPadding + 2 * verticalSpacing).divide(3));
+            ((Runner) node).prefHeightProperty().bind(heightProperty().subtract(2 * verticalPadding + (N-1) * verticalSpacing).divide(N));
         });
     }
 
+    // add a new lap to the preview, remove the last one
     public void pushLap(Runner runner) {
-        // doew not accept emtpy runners
+        // does not accept empty runners
         if (runner.isEmpty()) return;
         getChildren().add(0, runner);
-        getChildren().remove(3);
+        getChildren().remove(N);
 
         //set runner width and height
         runner.maxWidthProperty().bind(widthProperty().subtract(2 * horizontalPadding));
         runner.maxHeightProperty().bind(heightProperty().subtract(2 * verticalPadding + 2 * verticalSpacing).divide(3));
 
-
+        // update runner information and style
         runner.incrementLapCount();
         runner.changeTextColor(Color.SLATEGREY);
     }

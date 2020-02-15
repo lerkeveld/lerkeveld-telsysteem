@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
+// takes care of all transaction with the SQLite database
 public class RunDatabase {
 
     private CountSystem owner;
@@ -27,11 +28,12 @@ public class RunDatabase {
 
     public RunDatabase(CountSystem owner) {
         super();
+        // necessary for the file selection popup windows
         this.owner = owner;
     }
 
+    // select an existing database, to be used by the application
     public void selectDatabase() {
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("*SQLite database", "*.db"));
         fileChooser.setTitle("Database chooser");
@@ -52,6 +54,7 @@ public class RunDatabase {
         }
     }
 
+    // create new database, to be used by the application, and save it in the user defined location
     public void newDatabase() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("*SQLite database", "*.db"));
@@ -77,6 +80,7 @@ public class RunDatabase {
         }
     }
 
+    // setup the main tables and elements of the database
     private void buildDatabase() throws SQLException {
         database.prepareStatement(
                 "CREATE TABLE \"groups\" (\n" +
@@ -111,10 +115,13 @@ public class RunDatabase {
         ).executeUpdate();
     }
 
+    // setup connection to database stored in the given file
     private void connectToDatabase(File file) throws SQLException {
         database = DriverManager.getConnection("jdbc:sqlite:" + file.getAbsolutePath());
     }
 
+    // setup the different prepared statements that require user input
+    // benefits from increased performance and no risk of injection attacks
     private void setupPreparedStatements() throws SQLException {
         searchRunner = database.prepareStatement("Select name from runners where name like ?");
         getRunner = database.prepareStatement("select count(), avg(time) from laps where runner=?");
@@ -127,6 +134,7 @@ public class RunDatabase {
 
     }
 
+    // get all runner names with the given string in their name
     public Collection<String> searchRunners(String name) {
         try {
             ArrayList<String> items = new ArrayList<>();
@@ -142,6 +150,7 @@ public class RunDatabase {
         }
     }
 
+    // get a Runner object based on the given name
     public Runner getRunner(String name) {
         // returns null if the given runner does not exist.
         if (!containsRunner(name)) return null;
@@ -155,6 +164,7 @@ public class RunDatabase {
         }
     }
 
+    // check if the given runner name is in the database
     public boolean containsRunner(String name) {
         try {
             checkRunner.setString(1, name);
@@ -165,11 +175,12 @@ public class RunDatabase {
         }
     }
 
+    // get all group names with the given string in their name
     public Collection<String> searchGroups(String name) {
         try {
             ArrayList<String> items = new ArrayList<>();
             searchGroup.setString(1, "%" + name + "%");
-            ResultSet rs = searchGroup.executeQuery(); // todo sanitize
+            ResultSet rs = searchGroup.executeQuery();
             while (rs.next()) {
                 items.add(rs.getString("name"));
             }
@@ -180,16 +191,18 @@ public class RunDatabase {
         }
     }
 
+    // check if the given group name is in the database
     public boolean containsGroup(String name) {
         try {
             checkGroup.setString(1, name);
-            return !checkGroup.executeQuery().isClosed(); // todo sanitize
+            return !checkGroup.executeQuery().isClosed();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
+    // create a new runner in the database with the given name, group and friend
     public void addRunner(String name, String group, String friend) {
         if (friend.equals("")) {
             try {
@@ -211,11 +224,12 @@ public class RunDatabase {
         }
     }
 
+    // create a new lap in the database for the given runner and given time
     public void addLap(String name, int time) {
         try {
             insertLap.setString(1, name);
             insertLap.setInt(2, time);
-            insertLap.executeUpdate(); //TODO sanitize input
+            insertLap.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

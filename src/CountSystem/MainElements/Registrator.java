@@ -13,6 +13,8 @@ import javafx.scene.layout.VBox;
 
 import java.util.Objects;
 
+// adds interface for selecting the database
+// adds interface for registering runners
 public class Registrator extends VBox {
 
     private AutocompleteTextField groupTextField;
@@ -58,7 +60,9 @@ public class Registrator extends VBox {
         friendTextField.setPromptText("vriend");
     }
 
+    // make sure the group field is correctly filled in on action of this field
     private void processGroup(ActionEvent actionEvent) {
+        // give the friend text field a red accent to indicate a non-existing runner, if the runner does not exist
         if (friendTextField.getText().equals("") || database.containsRunner(friendTextField.getText())) {
             friendTextField.setStyle("");
         } else {
@@ -67,8 +71,10 @@ public class Registrator extends VBox {
             return;
         }
         if (database.containsGroup(groupTextField.getText())) {
+            // setup new runner
             database.addRunner(runnerTextField.getText(), groupTextField.getText(), friendTextField.getText());
             countSystem.addRunnerToQueue(database.getRunner(runnerTextField.getText()));
+            // clear all registration fields
             deactivateNewRunnerRegistration();
             groupTextField.setStyle("");
             groupTextField.clear();
@@ -76,10 +82,11 @@ public class Registrator extends VBox {
             friendTextField.clear();
             runnerTextField.requestFocus();
         } else {
-            groupTextField.setStyle("-fx-focus-color: #ff0000;");
+            groupTextField.setStyle("-fx-focus-color: #ff0000;"); // red accent if group does not exist
         }
     }
 
+    // check if friend exist, if not, make the text field red, else move on to group text field
     private void processFriend(ActionEvent actionEvent) {
         if (friendTextField.getText().equals("") || database.containsRunner(friendTextField.getText())) {
             friendTextField.setStyle("");
@@ -87,6 +94,7 @@ public class Registrator extends VBox {
         } else friendTextField.setStyle("-fx-focus-color: #ff0000;");
     }
 
+    // setup a new runner if it is already in the database, else start the new runner setup
     private void processRunner(ActionEvent actionEvent) {
         Runner runner = database.getRunner(runnerTextField.getText());
         if (Objects.nonNull(runner)) {
@@ -97,14 +105,17 @@ public class Registrator extends VBox {
         }
     }
 
+    // start the registration of a new runner
     private void activateNewRunnerRegistration() {
         getChildren().addAll(friendTextField, groupTextField);
     }
 
+    // end the registration of a new runner
     private void deactivateNewRunnerRegistration() {
         getChildren().removeAll(friendTextField, groupTextField);
     }
 
+    // switch from database selection to runner registration mode
     public void changeToRunnerRegistration() {
         // basic runner registration consists of an autocomplete text field
         getChildren().setAll(runnerTextField);

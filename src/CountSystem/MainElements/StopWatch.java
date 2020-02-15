@@ -13,7 +13,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
-// todo auto scaling of elements
+// keeps track of the time in the current lap
+// shows the runner that is currently running
 public class StopWatch extends VBox {
 
     // label that shows the duration of the current lap
@@ -88,6 +89,7 @@ public class StopWatch extends VBox {
         return oldRunner;
     }
 
+    // set the next runner
     private void setRunner(Runner r) {
         runner = r;
         getChildren().set(1, r);

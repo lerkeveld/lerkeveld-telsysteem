@@ -9,7 +9,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         // create and show the main scene of this application
         primaryStage.setScene(new CountSystem());
         primaryStage.setWidth(1080);

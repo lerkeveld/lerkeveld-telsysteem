@@ -14,7 +14,6 @@ import javafx.scene.layout.VBox;
 import java.util.Objects;
 
 // the app consists of four main elements, displayed in a grid pattern
-// a GridPane is not used, as i could not get it to scale its children like i want to
 public class CountSystem extends Scene {
 
     private double verticalPadding = 10;
@@ -50,6 +49,7 @@ public class CountSystem extends Scene {
         vBox1.setSpacing(verticalSpacing);
         vBox2.setSpacing(verticalSpacing);
 
+        // initialise database, not yet useful
         database = new RunDatabase(this);
 
         // populate vBoxes
@@ -71,6 +71,7 @@ public class CountSystem extends Scene {
         registrator.prefWidthProperty().bind(vBox2.widthProperty());
     }
 
+    // interface between stopwatch, runnerQueue and previousLaps
     public void nextLap() {
         Runner nextRunner = runnerQueue.pop();
         if (Objects.isNull(nextRunner)) {
@@ -78,15 +79,17 @@ public class CountSystem extends Scene {
         } else previousLaps.pushLap(stopWatch.startNewLap(nextRunner));
     }
 
+    // interface between runnerQueue and database
     public void registerLap(String name, int time) {
         database.addLap(name, time);
     }
 
-
+    // interface between database and runnerRegistration
     public void changeToRunnerRegistration() {
         registrator.changeToRunnerRegistration();
     }
 
+    // interface between runnerRegistration and runnerQueue
     public void addRunnerToQueue(Runner runner) {
         runnerQueue.add(runner);
     }

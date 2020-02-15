@@ -10,6 +10,7 @@ import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 
+// small container with the name of the runner and some extra information
 public class Runner extends VBox {
 
     private static final double defaultTextSize = 23;
@@ -17,25 +18,29 @@ public class Runner extends VBox {
     private Label extraNameLabel;
     private Label extraValueLabel;
     private Label lapCount;
-    private ArrayList<Label> labels = new ArrayList<>();
+    private ArrayList<Label> labels = new ArrayList<>(); // list of all labels for easy scaling
     private boolean empty = false;
 
     public Runner(String name, int laps, String extraName, String extraValue) {
         super();
+        // set layout of the VBox
         setAlignment(Pos.TOP_CENTER);
         setPadding(new Insets(0, 10, 0, 10));
         setStyle("-fx-border-color: grey; -fx-border-insets: 0; -fx-border-width: 2; -fx-border-radius: 10;");
 
+        // create name label
         nameLabel = new Label(name);
         getChildren().add(nameLabel);
         nameLabel.setFont(new Font("System Bold", 2 * defaultTextSize));
         labels.add(nameLabel);
 
+        // create HBox containing extra information
         HBox info = new HBox();
         getChildren().add(info);
         info.setAlignment(Pos.TOP_CENTER);
         info.setSpacing(10);
 
+        // create label for laps and lapcount
         Label lapsLabel = new Label("Aantal Rondjes:");
         info.getChildren().add(lapsLabel);
         lapsLabel.setFont(new Font("System Bold", defaultTextSize));
@@ -46,6 +51,7 @@ public class Runner extends VBox {
         lapCount.setFont(new Font("System", defaultTextSize));
         labels.add(lapCount);
 
+        // create label for extra info and extra value
         extraNameLabel = new Label(extraName);
         info.getChildren().add(extraNameLabel);
         extraNameLabel.setFont(new Font("System Bold", defaultTextSize));
@@ -72,12 +78,14 @@ public class Runner extends VBox {
         return runner;
     }
 
+    //  increment the lapcount of this runner
     public void incrementLapCount() {
         // does not work on empty runner
         if (isEmpty()) return;
         lapCount.setText("" + (Integer.parseInt(lapCount.getText()) + 1));
     }
 
+    // set the extra information of this runner with the given name and value
     public void setExtra(String name, String value) {
         // does not work on empty runner
         if (isEmpty()) return;
@@ -85,24 +93,29 @@ public class Runner extends VBox {
         extraValueLabel.setText(value);
     }
 
+    // change the text color of all labels
     public void changeTextColor(Color color) {
         labels.forEach(label -> label.setTextFill(color));
     }
 
+    // scale all labels by the given scale factor
     public void scale(double i) {
         if (i > 0) {
             labels.forEach(label -> label.setFont(new Font(label.getFont().getName(), label.getFont().getSize() * i)));
         }
     }
 
+    // set the indicator for whether this is an dummy runner
     private void setEmpty() {
         empty = true;
     }
 
+    // check whether this is a dummy runner
     public boolean isEmpty() {
         return empty;
     }
 
+    // get the name of this runner
     public String getName() {
         return nameLabel.getText();
     }

@@ -4,14 +4,16 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 
+// handles timing of a lap and the animation of the timer label.
 public class TimerHandler implements EventHandler {
-    Label label;
+    Label label; // the label to be animated
     private int tenths = 0;
 
     public TimerHandler(Label label) {
         this.label = label;
     }
 
+    // converts the thents of a second to a time in mm:ss.t format
     public static String toText(int time) {
         return (time / 600) % 60 + ":" + ((time % 600 < 100) ? "0" : "") + (time / 10) % 60 + "." + time % 10;
     }
@@ -21,6 +23,7 @@ public class TimerHandler implements EventHandler {
         label.setText(toText(tenths++));
     }
 
+    // return the time past in thenths of seconds
     public int getTime() {
         return tenths;
     }
