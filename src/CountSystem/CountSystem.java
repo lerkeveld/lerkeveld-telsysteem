@@ -8,14 +8,14 @@ import CountSystem.Utilities.RunDatabase;
 import CountSystem.supportElements.Runner;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.util.Objects;
 
 // the app consists of four main elements, displayed in a grid pattern
 // a GridPane is not used, as i could not get it to scale its children like i want to
-public  class CountSystem extends Scene {
+public class CountSystem extends Scene {
 
     private double verticalPadding = 10;
     private double horizontalPadding = 10;
@@ -28,7 +28,7 @@ public  class CountSystem extends Scene {
     private RunnerQueue runnerQueue;
     private RunDatabase database;
 
-    public CountSystem(){
+    public CountSystem() {
         super(new HBox());
 
         HBox hBox = (HBox) getRoot();
@@ -43,10 +43,10 @@ public  class CountSystem extends Scene {
         hBox.getChildren().setAll(vBox1, vBox2);
 
         // set layout of vBoxes
-        vBox1.prefHeightProperty().bind(hBox.heightProperty().subtract(2* verticalPadding));
-        vBox1.prefWidthProperty().bind(hBox.widthProperty().subtract(2*horizontalPadding + horizontalSpacing).divide(2));
-        vBox2.prefHeightProperty().bind(hBox.heightProperty().subtract(2* verticalPadding));
-        vBox2.prefWidthProperty().bind(hBox.widthProperty().subtract(2*horizontalPadding + horizontalSpacing).divide(2));
+        vBox1.prefHeightProperty().bind(hBox.heightProperty().subtract(2 * verticalPadding));
+        vBox1.prefWidthProperty().bind(hBox.widthProperty().subtract(2 * horizontalPadding + horizontalSpacing).divide(2));
+        vBox2.prefHeightProperty().bind(hBox.heightProperty().subtract(2 * verticalPadding));
+        vBox2.prefWidthProperty().bind(hBox.widthProperty().subtract(2 * horizontalPadding + horizontalSpacing).divide(2));
         vBox1.setSpacing(verticalSpacing);
         vBox2.setSpacing(verticalSpacing);
 
@@ -71,14 +71,14 @@ public  class CountSystem extends Scene {
         registrator.prefWidthProperty().bind(vBox2.widthProperty());
     }
 
-    public void nextLap(){
+    public void nextLap() {
         Runner nextRunner = runnerQueue.pop();
         if (Objects.isNull(nextRunner)) {
             previousLaps.pushLap(stopWatch.stopCurrentLap());
         } else previousLaps.pushLap(stopWatch.startNewLap(nextRunner));
     }
 
-    public void registerLap(String name, int time){
+    public void registerLap(String name, int time) {
         database.addLap(name, time);
     }
 
@@ -87,7 +87,7 @@ public  class CountSystem extends Scene {
         registrator.changeToRunnerRegistration();
     }
 
-    public void addRunnerToQueue(Runner runner){
+    public void addRunnerToQueue(Runner runner) {
         runnerQueue.add(runner);
     }
 }

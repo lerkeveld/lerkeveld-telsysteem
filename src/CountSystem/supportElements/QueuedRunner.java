@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 
-public class QueuedRunner extends HBox{
+public class QueuedRunner extends HBox {
     private int position;
     private Runner runner;
     private Label label = new Label("0");

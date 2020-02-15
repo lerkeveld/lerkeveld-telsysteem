@@ -34,7 +34,7 @@ public class StopWatch extends VBox {
     private TimerHandler timerHandler = new TimerHandler(timer);
     private CountSystem countSystem;
 
-    public StopWatch(CountSystem countSystem){
+    public StopWatch(CountSystem countSystem) {
         super();
         this.countSystem = countSystem;
 
@@ -66,7 +66,7 @@ public class StopWatch extends VBox {
     }
 
     // start a new lap and stop the previous lap if it is not stopped
-    public Runner startNewLap(Runner runner){
+    public Runner startNewLap(Runner runner) {
         Runner oldRunner = stopCurrentLap();
         timerHandler = new TimerHandler(timer);
         timeline.getKeyFrames().setAll(new KeyFrame(Duration.seconds(0.1), timerHandler));
@@ -88,7 +88,7 @@ public class StopWatch extends VBox {
         return oldRunner;
     }
 
-    private void setRunner(Runner r){
+    private void setRunner(Runner r) {
         runner = r;
         getChildren().set(1, r);
     }

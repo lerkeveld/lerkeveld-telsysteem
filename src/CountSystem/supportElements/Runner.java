@@ -10,16 +10,15 @@ import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 
-public class Runner extends VBox{
+public class Runner extends VBox {
 
+    private static final double defaultTextSize = 23;
     private Label nameLabel;
     private Label extraNameLabel;
     private Label extraValueLabel;
     private Label lapCount;
     private ArrayList<Label> labels = new ArrayList<>();
     private boolean empty = false;
-
-    private static final double defaultTextSize = 23;
 
     public Runner(String name, int laps, String extraName, String extraValue) {
         super();
@@ -29,7 +28,7 @@ public class Runner extends VBox{
 
         nameLabel = new Label(name);
         getChildren().add(nameLabel);
-        nameLabel.setFont(new Font("System Bold", 2*defaultTextSize));
+        nameLabel.setFont(new Font("System Bold", 2 * defaultTextSize));
         labels.add(nameLabel);
 
         HBox info = new HBox();
@@ -62,6 +61,17 @@ public class Runner extends VBox{
 //        widthProperty().addListener((observableValue, old, n) -> scale(old.doubleValue() > 100 ? n.doubleValue()/old.doubleValue() : 1));
     }
 
+    // returns an empty runner template
+    public static Runner getEmptyRunner() {
+        // new runner with space as all it's attributes.
+        Runner runner = new Runner(" ", 0, " ", " ");
+        ((HBox) runner.getChildren().get(1)).getChildren().forEach(child -> ((Label) child).setText(" "));
+        // delete the given style
+        runner.setStyle("");
+        runner.setEmpty();
+        return runner;
+    }
+
     public void incrementLapCount() {
         // does not work on empty runner
         if (isEmpty()) return;
@@ -81,26 +91,15 @@ public class Runner extends VBox{
 
     public void scale(double i) {
         if (i > 0) {
-            labels.forEach(label -> label.setFont(new Font(label.getFont().getName(), label.getFont().getSize()*i)));
+            labels.forEach(label -> label.setFont(new Font(label.getFont().getName(), label.getFont().getSize() * i)));
         }
     }
 
-    // returns an empty runner template
-    public static Runner getEmptyRunner(){
-        // new runner with space as all it's attributes.
-        Runner runner = new Runner(" ", 0, " ",  " ");
-        ((HBox) runner.getChildren().get(1)).getChildren().forEach(child -> ((Label) child).setText(" "));
-        // delete the given style
-        runner.setStyle("");
-        runner.setEmpty();
-        return runner;
-    }
-
-    private void setEmpty(){
+    private void setEmpty() {
         empty = true;
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return empty;
     }
 

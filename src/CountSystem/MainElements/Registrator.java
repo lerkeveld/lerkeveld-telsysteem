@@ -1,8 +1,8 @@
 package CountSystem.MainElements;
 
 import CountSystem.CountSystem;
-import CountSystem.supportElements.AutocompleteTextField;
 import CountSystem.Utilities.RunDatabase;
+import CountSystem.supportElements.AutocompleteTextField;
 import CountSystem.supportElements.Runner;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -21,7 +21,7 @@ public class Registrator extends VBox {
     private CountSystem countSystem;
     private RunDatabase database;
 
-    public Registrator(CountSystem countSystem, RunDatabase database){
+    public Registrator(CountSystem countSystem, RunDatabase database) {
         super();
         this.countSystem = countSystem;
         this.database = database;
@@ -59,15 +59,14 @@ public class Registrator extends VBox {
     }
 
     private void processGroup(ActionEvent actionEvent) {
-        if (friendTextField.getText().equals("") || database.containsRunner(friendTextField.getText())){
+        if (friendTextField.getText().equals("") || database.containsRunner(friendTextField.getText())) {
             friendTextField.setStyle("");
-        }
-        else {
+        } else {
             friendTextField.setStyle("-fx-focus-color: #ff0000;");
             friendTextField.requestFocus();
             return;
         }
-        if (database.containsGroup(groupTextField.getText())){
+        if (database.containsGroup(groupTextField.getText())) {
             database.addRunner(runnerTextField.getText(), groupTextField.getText(), friendTextField.getText());
             countSystem.addRunnerToQueue(database.getRunner(runnerTextField.getText()));
             deactivateNewRunnerRegistration();
@@ -76,27 +75,24 @@ public class Registrator extends VBox {
             runnerTextField.clear();
             friendTextField.clear();
             runnerTextField.requestFocus();
-        }
-        else {
+        } else {
             groupTextField.setStyle("-fx-focus-color: #ff0000;");
         }
     }
 
     private void processFriend(ActionEvent actionEvent) {
-        if (friendTextField.getText().equals("") || database.containsRunner(friendTextField.getText())){
+        if (friendTextField.getText().equals("") || database.containsRunner(friendTextField.getText())) {
             friendTextField.setStyle("");
             groupTextField.requestFocus();
-        }
-        else friendTextField.setStyle("-fx-focus-color: #ff0000;");
+        } else friendTextField.setStyle("-fx-focus-color: #ff0000;");
     }
 
     private void processRunner(ActionEvent actionEvent) {
         Runner runner = database.getRunner(runnerTextField.getText());
-        if (Objects.nonNull(runner)){
+        if (Objects.nonNull(runner)) {
             countSystem.addRunnerToQueue(runner);
             runnerTextField.clear();
-        }
-        else {
+        } else {
             activateNewRunnerRegistration();
         }
     }

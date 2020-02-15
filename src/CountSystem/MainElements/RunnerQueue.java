@@ -4,7 +4,6 @@ import CountSystem.supportElements.QueuedRunner;
 import CountSystem.supportElements.Runner;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -40,7 +39,7 @@ public class RunnerQueue extends ScrollPane {
 
     public Runner pop() {
         // returns null if no runner is present
-        if (size()==0) return null;
+        if (size() == 0) return null;
         queue.getChildren().remove(0);
         runners.forEach(QueuedRunner::advance);
         return runners.pop().getRunner();

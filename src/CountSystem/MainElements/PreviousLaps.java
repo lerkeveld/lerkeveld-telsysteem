@@ -27,8 +27,8 @@ public class PreviousLaps extends VBox {
 
         // set runner layout
         getChildren().forEach(node -> {
-            ((Runner) node).prefWidthProperty().bind(widthProperty().subtract(2*horizontalPadding));
-            ((Runner) node).prefHeightProperty().bind(heightProperty().subtract(2*verticalPadding+2*verticalSpacing).divide(3));
+            ((Runner) node).prefWidthProperty().bind(widthProperty().subtract(2 * horizontalPadding));
+            ((Runner) node).prefHeightProperty().bind(heightProperty().subtract(2 * verticalPadding + 2 * verticalSpacing).divide(3));
         });
     }
 
@@ -39,8 +39,8 @@ public class PreviousLaps extends VBox {
         getChildren().remove(3);
 
         //set runner width and height
-        runner.maxWidthProperty().bind(widthProperty().subtract(2*horizontalPadding));
-        runner.maxHeightProperty().bind(heightProperty().subtract(2*verticalPadding+2*verticalSpacing).divide(3));
+        runner.maxWidthProperty().bind(widthProperty().subtract(2 * horizontalPadding));
+        runner.maxHeightProperty().bind(heightProperty().subtract(2 * verticalPadding + 2 * verticalSpacing).divide(3));
 
 
         runner.incrementLapCount();
