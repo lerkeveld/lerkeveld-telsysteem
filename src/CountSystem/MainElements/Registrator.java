@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 import java.util.Objects;
 
@@ -22,6 +23,8 @@ public class Registrator extends VBox {
     private AutocompleteTextField friendTextField;
     private CountSystem countSystem;
     private RunDatabase database;
+    private Button newButton;
+    private Button selectButton;
 
     public Registrator(CountSystem countSystem, RunDatabase database) {
         super();
@@ -38,8 +41,8 @@ public class Registrator extends VBox {
         HBox hbox = new HBox();
         getChildren().add(hbox);
         hbox.prefWidthProperty().bind(widthProperty().subtract(20));
-        Button selectButton = new Button("selecteer database");
-        Button newButton = new Button("nieuwe database");
+        selectButton = new Button("selecteer database");
+        newButton = new Button("nieuwe database");
         selectButton.setOnAction(actionEvent -> database.selectDatabase());
         newButton.setOnAction(actionEvent -> database.newDatabase());
         selectButton.prefWidthProperty().bind(hbox.widthProperty().divide(2));
@@ -120,5 +123,14 @@ public class Registrator extends VBox {
         // basic runner registration consists of an autocomplete text field
         getChildren().setAll(runnerTextField);
 
+    }
+
+    // scale all elements of this registrator with the given scale s
+    public void scale(double s) {
+        newButton.setFont(new Font(newButton.getFont().getName(), newButton.getFont().getSize() * s));
+        selectButton.setFont(new Font(selectButton.getFont().getName(), selectButton.getFont().getSize() * s));
+        groupTextField.scale(s);
+        runnerTextField.scale(s);
+        friendTextField.scale(s);
     }
 }

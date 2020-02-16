@@ -29,7 +29,7 @@ public class PreviousLaps extends VBox {
         // set runner layout
         getChildren().forEach(node -> {
             ((Runner) node).prefWidthProperty().bind(widthProperty().subtract(2 * horizontalPadding));
-            ((Runner) node).prefHeightProperty().bind(heightProperty().subtract(2 * verticalPadding + (N-1) * verticalSpacing).divide(N));
+            ((Runner) node).prefHeightProperty().bind(heightProperty().subtract(2 * verticalPadding + (N - 1) * verticalSpacing).divide(N));
         });
     }
 
@@ -49,4 +49,8 @@ public class PreviousLaps extends VBox {
         runner.changeTextColor(Color.SLATEGREY);
     }
 
+    // scale all runners in this queue
+    public void scale(double s) {
+        getChildren().forEach(node -> ((Runner) node).scale(s));
+    }
 }

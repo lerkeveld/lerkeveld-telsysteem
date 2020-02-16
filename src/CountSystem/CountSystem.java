@@ -3,7 +3,7 @@ package CountSystem;
 import CountSystem.MainElements.PreviousLaps;
 import CountSystem.MainElements.Registrator;
 import CountSystem.MainElements.RunnerQueue;
-import CountSystem.MainElements.StopWatch;
+import CountSystem.MainElements.Stopwatch;
 import CountSystem.Utilities.RunDatabase;
 import CountSystem.supportElements.Runner;
 import javafx.geometry.Insets;
@@ -21,7 +21,7 @@ public class CountSystem extends Scene {
     private double horizontalSpacing = 10;
     private double verticalSpacing = 10;
 
-    private StopWatch stopWatch;
+    private Stopwatch stopWatch;
     private Registrator registrator;
     private PreviousLaps previousLaps;
     private RunnerQueue runnerQueue;
@@ -53,7 +53,7 @@ public class CountSystem extends Scene {
         database = new RunDatabase(this);
 
         // populate vBoxes
-        stopWatch = new StopWatch(this);
+        stopWatch = new Stopwatch(this);
         registrator = new Registrator(this, database);
         previousLaps = new PreviousLaps();
         runnerQueue = new RunnerQueue();
@@ -69,6 +69,19 @@ public class CountSystem extends Scene {
         runnerQueue.prefWidthProperty().bind(vBox2.widthProperty());
         registrator.prefHeightProperty().bind(vBox2.heightProperty().subtract(verticalSpacing).divide(2));
         registrator.prefWidthProperty().bind(vBox2.widthProperty());
+
+        // set listener that change the scale of all elements based on the height of the frame
+        this.heightProperty().addListener((observableValue, s, t1) -> scale(t1.doubleValue() / s.doubleValue()));
+    }
+
+    // scale all elements of this count system with the given scale
+    private void scale(double s) {
+        if (0.1 < s && s < 10) {
+            stopWatch.scale(s);
+            previousLaps.scale(s);
+            runnerQueue.scale(s);
+            registrator.scale(s);
+        }
     }
 
     // interface between stopwatch, runnerQueue and previousLaps

@@ -11,6 +11,7 @@ import javafx.scene.text.Font;
 // wrapper around a runner to indicate its position in the queue
 // and allow it to move up/down in the queue or get removed from it
 public class QueuedRunner extends HBox {
+    private VBox buttons;
     private int position;
     private Runner runner;
     private Label label = new Label("0");
@@ -39,7 +40,7 @@ public class QueuedRunner extends HBox {
         Font.loadFont(this.getClass().getClassLoader().getResource("fa-solid-900.ttf").toExternalForm(), 12);
 
         // setup the arrows and delete button
-        VBox buttons = new VBox();
+        buttons = new VBox();
         Button up = new Button("\uf077");
         up.setOnAction(event -> queue.moveUp(this));
         Button cancel = new Button("\uf05e");
@@ -66,10 +67,22 @@ public class QueuedRunner extends HBox {
     }
 
     // get the runner wrapped in this QueuedRunner
-    public Runner getRunner() { return runner; }
+    public Runner getRunner() {
+        return runner;
+    }
 
     // get the position of this Queued runner in its queue
     public int getPosition() {
         return position;
+    }
+
+    // scale all elements of this queuedRunner with the given scale
+    public void scale(double s) {
+        // scale position label
+        label.setFont(new Font(label.getFont().getName(), label.getFont().getSize() * s));
+        // scale runner
+        runner.scale(s);
+        // scale button text
+        buttons.getChildren().forEach(node -> ((Button) node).setFont(new Font(((Button) node).getFont().getName(), ((Button) node).getFont().getSize() * s)));
     }
 }

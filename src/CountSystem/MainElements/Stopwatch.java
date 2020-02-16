@@ -15,7 +15,7 @@ import javafx.util.Duration;
 
 // keeps track of the time in the current lap
 // shows the runner that is currently running
-public class StopWatch extends VBox {
+public class Stopwatch extends VBox {
 
     // label that shows the duration of the current lap
     private Label timer = new Label();
@@ -35,7 +35,7 @@ public class StopWatch extends VBox {
     private TimerHandler timerHandler = new TimerHandler(timer);
     private CountSystem countSystem;
 
-    public StopWatch(CountSystem countSystem) {
+    public Stopwatch(CountSystem countSystem) {
         super();
         this.countSystem = countSystem;
 
@@ -93,5 +93,15 @@ public class StopWatch extends VBox {
     private void setRunner(Runner r) {
         runner = r;
         getChildren().set(1, r);
+    }
+
+    // scale all elements of this stopwatch
+    public void scale(double s) {
+        // scale stopwatch label
+        timer.setFont(new Font(timer.getFont().getName(), timer.getFont().getSize() * s));
+        // scale runner
+        runner.scale(s);
+        // scale button
+        button.setFont(new Font(button.getFont().getName(), button.getFont().getSize() * s));
     }
 }

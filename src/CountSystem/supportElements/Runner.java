@@ -99,10 +99,8 @@ public class Runner extends VBox {
     }
 
     // scale all labels by the given scale factor
-    public void scale(double i) {
-        if (i > 0) {
-            labels.forEach(label -> label.setFont(new Font(label.getFont().getName(), label.getFont().getSize() * i)));
-        }
+    public void scale(double s) {
+        labels.forEach(label -> label.setFont(new Font(label.getFont().getName(), label.getFont().getSize() * s)));
     }
 
     // set the indicator for whether this is an dummy runner

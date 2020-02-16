@@ -5,6 +5,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Font;
 
 import java.util.Collection;
 import java.util.function.Function;
@@ -20,6 +21,8 @@ public class AutocompleteTextField extends TextField {
     private Function<String, Collection<String>> getCompletions;
 
     private ContextMenu completions = new ContextMenu();
+
+    private double menuItemTextSize = 12;
 
     public AutocompleteTextField(Function<String, Collection<String>> func) {
         super();
@@ -37,6 +40,7 @@ public class AutocompleteTextField extends TextField {
                                 completions.hide();
                             }
                     );
+                    ((Label) item.getContent()).setFont(new Font(((Label) item.getContent()).getFont().getName(), menuItemTextSize));
                     completions.getItems().add(item);
                 });
                 // do not show if the size is too large
@@ -50,5 +54,12 @@ public class AutocompleteTextField extends TextField {
         focusedProperty().addListener((observableValue, aBoolean, aBoolean2) -> completions.hide());
     }
 
+    // scale the menu items and the text field
+    public void scale(double s){
+        setFont(new Font(getFont().getName(), getFont().getSize() * s));
+        menuItemTextSize *= s;
+        // this is not strictly necessary, as the menu disappears when trying to change the size
+        // completions.getItems().forEach(item -> ((Label) ((CustomMenuItem) item).getContent()).setFont(new Font(((Label) ((CustomMenuItem) item).getContent()).getFont().getName(), menuItemTextSize)));
+    }
 
 }

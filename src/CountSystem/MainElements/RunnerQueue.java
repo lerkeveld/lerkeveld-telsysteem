@@ -91,4 +91,9 @@ public class RunnerQueue extends ScrollPane {
             runners.get(pos2).decline();
         }
     }
+
+    // scale all queued runners with the given scale
+    public void scale(double s) {
+        runners.forEach(runner -> runner.scale(s));
+    }
 }
