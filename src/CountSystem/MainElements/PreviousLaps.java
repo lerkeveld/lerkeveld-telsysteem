@@ -41,8 +41,8 @@ public class PreviousLaps extends VBox {
         getChildren().remove(N);
 
         //set runner width and height
-        runner.maxWidthProperty().bind(widthProperty().subtract(2 * horizontalPadding));
-        runner.maxHeightProperty().bind(heightProperty().subtract(2 * verticalPadding + 2 * verticalSpacing).divide(3));
+        runner.prefWidthProperty().bind(widthProperty().subtract(2 * horizontalPadding));
+        runner.prefHeightProperty().bind(heightProperty().subtract(2 * verticalPadding + 2 * verticalSpacing).divide(3));
 
         // update runner information and style
         runner.incrementLapCount();
