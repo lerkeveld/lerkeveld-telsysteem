@@ -13,7 +13,7 @@ public class TimerHandler implements EventHandler {
         this.label = label;
     }
 
-    // converts the thents of a second to a time in mm:ss.t format
+    // converts the tenths of a second to a time in mm:ss.t format
     public static String toText(int time) {
         return (time / 600) % 60 + ":" + ((time % 600 < 100) ? "0" : "") + (time / 10) % 60 + "." + time % 10;
     }

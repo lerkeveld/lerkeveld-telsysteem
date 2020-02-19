@@ -13,7 +13,7 @@ import java.util.ArrayList;
 // small container with the name of the runner and some extra information
 public class Runner extends VBox {
 
-    private static final double defaultTextSize = 23;
+    private static double defaultTextSize = 23;
     private Label nameLabel;
     private Label extraNameLabel;
     private Label extraValueLabel;
@@ -61,10 +61,6 @@ public class Runner extends VBox {
         info.getChildren().add(extraValueLabel);
         extraValueLabel.setFont(new Font("System", defaultTextSize));
         labels.add(extraValueLabel);
-
-        // set autoScale feature todo make better
-//        heightProperty().addListener((observableValue, old, n) -> scale(old.doubleValue() > 10 ? n.doubleValue()/old.doubleValue() : 1));
-//        widthProperty().addListener((observableValue, old, n) -> scale(old.doubleValue() > 100 ? n.doubleValue()/old.doubleValue() : 1));
     }
 
     // returns an empty runner template
@@ -76,6 +72,10 @@ public class Runner extends VBox {
         runner.setStyle("");
         runner.setEmpty();
         return runner;
+    }
+
+    public static void scaleNewRunners(double s) {
+        defaultTextSize *= s;
     }
 
     //  increment the lapcount of this runner

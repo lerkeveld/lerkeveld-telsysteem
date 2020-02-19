@@ -50,13 +50,15 @@ public class Registrator extends VBox {
         hbox.getChildren().setAll(selectButton, newButton);
 
         // later, an AutocompleteTextField will be used to add runners
-        runnerTextField = new AutocompleteTextField(s -> database.searchRunners(s));
+        runnerTextField = new AutocompleteTextField(database::searchRunners);
         runnerTextField.setOnAction(this::processRunner);
+        // todo tab as completion with uppermost suggestion
         runnerTextField.setPromptText("voeg loper toe");
 
         // new runner can be added with two other AutocompleteTextFields
         groupTextField = new AutocompleteTextField(database::searchGroups);
         friendTextField = new AutocompleteTextField(database::searchRunners);
+        // todo tab as completion with uppermost suggestion
         groupTextField.setOnAction(this::processGroup);
         friendTextField.setOnAction(this::processFriend);
         groupTextField.setPromptText("group");
@@ -79,10 +81,6 @@ public class Registrator extends VBox {
             countSystem.addRunnerToQueue(database.getRunner(runnerTextField.getText()));
             // clear all registration fields
             deactivateNewRunnerRegistration();
-            groupTextField.setStyle("");
-            groupTextField.clear();
-            runnerTextField.clear();
-            friendTextField.clear();
             runnerTextField.requestFocus();
         } else {
             groupTextField.setStyle("-fx-focus-color: #ff0000;"); // red accent if group does not exist
@@ -103,6 +101,7 @@ public class Registrator extends VBox {
         if (Objects.nonNull(runner)) {
             countSystem.addRunnerToQueue(runner);
             runnerTextField.clear();
+            deactivateNewRunnerRegistration(); // if the registration was activated by a typo
         } else {
             activateNewRunnerRegistration();
         }
@@ -116,6 +115,11 @@ public class Registrator extends VBox {
     // end the registration of a new runner
     private void deactivateNewRunnerRegistration() {
         getChildren().removeAll(friendTextField, groupTextField);
+        groupTextField.setStyle("");
+        friendTextField.setStyle("");
+        groupTextField.clear();
+        runnerTextField.clear();
+        friendTextField.clear();
     }
 
     // switch from database selection to runner registration mode

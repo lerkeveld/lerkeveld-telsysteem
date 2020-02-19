@@ -42,14 +42,12 @@ public class RunDatabase {
         popup.initOwner(owner.getWindow());
         File file = fileChooser.showOpenDialog(popup);
         if (!Objects.isNull(file)) {
-
             try {
                 connectToDatabase(file);
                 setupPreparedStatements();
                 owner.changeToRunnerRegistration();
             } catch (SQLException e) {
                 e.printStackTrace();
-                return;
             }
         }
     }
@@ -75,7 +73,6 @@ public class RunDatabase {
                 owner.changeToRunnerRegistration();
             } catch (SQLException e) {
                 e.printStackTrace();
-                return;
             }
         }
     }
@@ -151,6 +148,7 @@ public class RunDatabase {
     }
 
     // get a Runner object based on the given name
+    // TODO implement insensitivity to capital letters
     public Runner getRunner(String name) {
         // returns null if the given runner does not exist.
         if (!containsRunner(name)) return null;
@@ -165,6 +163,7 @@ public class RunDatabase {
     }
 
     // check if the given runner name is in the database
+    // TODO implement insensitivity to capital letters
     public boolean containsRunner(String name) {
         try {
             checkRunner.setString(1, name);

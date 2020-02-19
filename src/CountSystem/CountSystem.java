@@ -81,6 +81,7 @@ public class CountSystem extends Scene {
             previousLaps.scale(s);
             runnerQueue.scale(s);
             registrator.scale(s);
+            Runner.scaleNewRunners(s);
         }
     }
 
