@@ -95,6 +95,10 @@ public class Stopwatch extends VBox {
         getChildren().set(1, r);
     }
 
+    public Runner getRunner(){
+        return runner;
+    }
+
     // scale all elements of this stopwatch
     public void scale(double s) {
         // scale stopwatch label

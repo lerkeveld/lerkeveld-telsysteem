@@ -5,6 +5,7 @@ import CountSystem.MainElements.Registrator;
 import CountSystem.MainElements.RunnerQueue;
 import CountSystem.MainElements.Stopwatch;
 import CountSystem.Utilities.RunDatabase;
+import CountSystem.supportElements.QueuedRunner;
 import CountSystem.supportElements.Runner;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -82,15 +83,17 @@ public class CountSystem extends Scene {
             runnerQueue.scale(s);
             registrator.scale(s);
             Runner.scaleNewRunners(s);
+            QueuedRunner.scaleNewQueuedRunners(s);
         }
     }
 
     // interface between stopwatch, runnerQueue and previousLaps
     public void nextLap() {
         Runner nextRunner = runnerQueue.pop();
-        if (Objects.isNull(nextRunner)) {
-            previousLaps.pushLap(stopWatch.stopCurrentLap());
-        } else previousLaps.pushLap(stopWatch.startNewLap(nextRunner));
+        Runner prevRunner = Objects.isNull(nextRunner) ? stopWatch.stopCurrentLap() : stopWatch.startNewLap(nextRunner);
+        previousLaps.pushLap(prevRunner);
+        runnerQueue.updateRunner(prevRunner.getName()); // to update the lapcount of runners that just ran and are in the queue
+        if (!Objects.isNull(nextRunner)) stopWatch.getRunner().updateLapCount();
     }
 
     // interface between runnerQueue and database

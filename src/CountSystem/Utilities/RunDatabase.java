@@ -25,6 +25,7 @@ public class RunDatabase {
     private PreparedStatement insertRunner;
     private PreparedStatement insertRunnerNoFriend;
     private PreparedStatement insertLap;
+    private PreparedStatement getLaps;
 
     public RunDatabase(CountSystem owner) {
         super();
@@ -121,14 +122,14 @@ public class RunDatabase {
     // benefits from increased performance and no risk of injection attacks
     private void setupPreparedStatements() throws SQLException {
         searchRunner = database.prepareStatement("Select name from runners where name like ?");
-        getRunner = database.prepareStatement("select count(), avg(time) from laps where runner=?");
-        checkRunner = database.prepareStatement("Select name from runners where name=?");
+        getRunner = database.prepareStatement("select runner, count(), avg(time) from laps where runner like ?");
+        checkRunner = database.prepareStatement("Select name from runners where name like ?");
         searchGroup = database.prepareStatement("Select name from groups where name like ?");
         checkGroup = database.prepareStatement("Select name from groups where name=?");
         insertRunnerNoFriend = database.prepareStatement("INSERT INTO runners (name, \"group\") values(?, ?)");
         insertRunner = database.prepareStatement("INSERT INTO runners values(?, ?, ?)");
         insertLap = database.prepareStatement("INSERT INTO laps(runner, time) values(?, ?)");
-
+        getLaps = database.prepareStatement("select count() from laps where runner like ?");
     }
 
     // get all runner names with the given string in their name
@@ -147,15 +148,24 @@ public class RunDatabase {
         }
     }
 
+    public int getLapCount(String name){
+        try {
+            getLaps.setString(1, name);
+            return getLaps.executeQuery().getInt("count()");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
     // get a Runner object based on the given name
-    // TODO implement insensitivity to capital letters
     public Runner getRunner(String name) {
         // returns null if the given runner does not exist.
         if (!containsRunner(name)) return null;
         try {
             getRunner.setString(1, name);
             ResultSet rs = getRunner.executeQuery();
-            return new Runner(name, rs.getInt("count()"), "Gemiddelde Tijd:", TimerHandler.toText((int) Math.round(rs.getDouble("avg(time)"))));
+            return new Runner(rs.getString("runner"), rs.getInt("count()"), "Gemiddelde Tijd:", TimerHandler.toText((int) Math.round(rs.getDouble("avg(time)"))), this);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -163,7 +173,6 @@ public class RunDatabase {
     }
 
     // check if the given runner name is in the database
-    // TODO implement insensitivity to capital letters
     public boolean containsRunner(String name) {
         try {
             checkRunner.setString(1, name);

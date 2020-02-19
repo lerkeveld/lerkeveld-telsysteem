@@ -45,7 +45,7 @@ public class PreviousLaps extends VBox {
         runner.prefHeightProperty().bind(heightProperty().subtract(2 * verticalPadding + 2 * verticalSpacing).divide(3));
 
         // update runner information and style
-        runner.incrementLapCount();
+        runner.updateLapCount();
         runner.changeTextColor(Color.SLATEGREY);
     }
 

@@ -96,4 +96,8 @@ public class RunnerQueue extends ScrollPane {
     public void scale(double s) {
         runners.forEach(runner -> runner.scale(s));
     }
+
+    public void updateRunner(String name) {
+        runners.stream().filter(queuedRunner -> queuedRunner.getName().equals(name)).forEach(QueuedRunner::updateLapCount);
+    }
 }

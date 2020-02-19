@@ -1,5 +1,6 @@
 package CountSystem.supportElements;
 
+import CountSystem.Utilities.RunDatabase;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -20,9 +21,11 @@ public class Runner extends VBox {
     private Label lapCount;
     private ArrayList<Label> labels = new ArrayList<>(); // list of all labels for easy scaling
     private boolean empty = false;
+    private RunDatabase database;
 
-    public Runner(String name, int laps, String extraName, String extraValue) {
+    public Runner(String name, int laps, String extraName, String extraValue, RunDatabase database) {
         super();
+        this.database = database;
         // set layout of the VBox
         setAlignment(Pos.TOP_CENTER);
         setPadding(new Insets(0, 10, 0, 10));
@@ -66,7 +69,7 @@ public class Runner extends VBox {
     // returns an empty runner template
     public static Runner getEmptyRunner() {
         // new runner with space as all it's attributes.
-        Runner runner = new Runner(" ", 0, " ", " ");
+        Runner runner = new Runner(" ", 0, " ", " ", null);
         ((HBox) runner.getChildren().get(1)).getChildren().forEach(child -> ((Label) child).setText(" "));
         // delete the given style
         runner.setStyle("");
@@ -79,10 +82,10 @@ public class Runner extends VBox {
     }
 
     //  increment the lapcount of this runner
-    public void incrementLapCount() {
+    public void updateLapCount() {
         // does not work on empty runner
         if (isEmpty()) return;
-        lapCount.setText("" + (Integer.parseInt(lapCount.getText()) + 1));
+        lapCount.setText("" + database.getLapCount(nameLabel.getText()));
     }
 
     // set the extra information of this runner with the given name and value

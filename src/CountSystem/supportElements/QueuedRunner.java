@@ -15,6 +15,7 @@ public class QueuedRunner extends HBox {
     private int position;
     private Runner runner;
     private Label label = new Label("0");
+    private static double defaultTextSize = 12;
 
     public QueuedRunner(Runner runner, RunnerQueue queue) {
         // set layout
@@ -26,7 +27,7 @@ public class QueuedRunner extends HBox {
         this.position = queue.size() + 1;
         getChildren().add(label);
         label.setText(Integer.toString(position));
-        label.setFont(new Font("System Bold", 48.0));
+        label.setFont(new Font("System Bold", defaultTextSize*4));
         label.setAlignment(Pos.CENTER);
         label.minHeightProperty().bind(heightProperty());
         label.minWidthProperty().bind(heightProperty());
@@ -37,7 +38,7 @@ public class QueuedRunner extends HBox {
         this.runner = runner;
 
         // laqd the font used for the arrows and delete character
-        Font.loadFont(this.getClass().getClassLoader().getResource("fa-solid-900.ttf").toExternalForm(), 12);
+        Font.loadFont(this.getClass().getClassLoader().getResource("fa-solid-900.ttf").toExternalForm(), defaultTextSize);
 
         // setup the arrows and delete button
         buttons = new VBox();
@@ -84,5 +85,17 @@ public class QueuedRunner extends HBox {
         runner.scale(s);
         // scale button text
         buttons.getChildren().forEach(node -> ((Button) node).setFont(new Font(((Button) node).getFont().getName(), ((Button) node).getFont().getSize() * s)));
+    }
+
+    public String getName(){
+        return runner.getName();
+    }
+
+    public static void scaleNewQueuedRunners(double s) {
+        defaultTextSize *= s;
+    }
+
+    public void updateLapCount() {
+        runner.updateLapCount();
     }
 }

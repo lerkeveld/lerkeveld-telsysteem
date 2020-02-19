@@ -68,6 +68,10 @@ public class Registrator extends VBox {
     // make sure the group field is correctly filled in on action of this field
     private void processGroup(ActionEvent actionEvent) {
         // give the friend text field a red accent to indicate a non-existing runner, if the runner does not exist
+        if (database.containsRunner(runnerTextField.getText())) {
+            processRunner(actionEvent);
+            return;
+        }
         if (friendTextField.getText().equals("") || database.containsRunner(friendTextField.getText())) {
             friendTextField.setStyle("");
         } else {
@@ -89,6 +93,10 @@ public class Registrator extends VBox {
 
     // check if friend exist, if not, make the text field red, else move on to group text field
     private void processFriend(ActionEvent actionEvent) {
+        if (database.containsRunner(runnerTextField.getText())) {
+            processRunner(actionEvent);
+            return;
+        }
         if (friendTextField.getText().equals("") || database.containsRunner(friendTextField.getText())) {
             friendTextField.setStyle("");
             groupTextField.requestFocus();
