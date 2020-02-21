@@ -18,6 +18,7 @@ public class RunDatabase {
     private CountSystem owner;
     private Connection database;
     private PreparedStatement searchRunner;
+    private PreparedStatement getRunnerName;
     private PreparedStatement getRunner;
     private PreparedStatement checkRunner;
     private PreparedStatement searchGroup;
@@ -122,10 +123,11 @@ public class RunDatabase {
     // benefits from increased performance and no risk of injection attacks
     private void setupPreparedStatements() throws SQLException {
         searchRunner = database.prepareStatement("Select name from runners where name like ?");
-        getRunner = database.prepareStatement("select runner, count(), avg(time) from laps where runner like ?");
+        getRunnerName = database.prepareStatement("select name from runners where name like ?");
+        getRunner = database.prepareStatement("select count(), avg(time) from laps where runner like ?");
         checkRunner = database.prepareStatement("Select name from runners where name like ?");
         searchGroup = database.prepareStatement("Select name from groups where name like ?");
-        checkGroup = database.prepareStatement("Select name from groups where name=?");
+        checkGroup = database.prepareStatement("Select name from groups where name like ?");
         insertRunnerNoFriend = database.prepareStatement("INSERT INTO runners (name, \"group\") values(?, ?)");
         insertRunner = database.prepareStatement("INSERT INTO runners values(?, ?, ?)");
         insertLap = database.prepareStatement("INSERT INTO laps(runner, time) values(?, ?)");
@@ -164,8 +166,9 @@ public class RunDatabase {
         if (!containsRunner(name)) return null;
         try {
             getRunner.setString(1, name);
+            getRunnerName.setString(1, name);
             ResultSet rs = getRunner.executeQuery();
-            return new Runner(rs.getString("runner"), rs.getInt("count()"), "Gemiddelde Tijd:", TimerHandler.toText((int) Math.round(rs.getDouble("avg(time)"))), this);
+            return new Runner(getRunnerName.executeQuery().getString("name"), rs.getInt("count()"), "Gemiddelde Tijd:", TimerHandler.toText((int) Math.round(rs.getDouble("avg(time)"))), this);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
