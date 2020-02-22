@@ -161,12 +161,15 @@ public class RunDatabase {
     }
 
     // get a Runner object based on the given name
-    public Runner getRunner(String name) throws SQLException {
-        // returns null if the given runner does not exist.
-        getRunner.setString(1, name);
-        getRunnerName.setString(1, name);
-        ResultSet rs = getRunner.executeQuery();
-        return new Runner(getRunnerName.executeQuery().getString("name"), rs.getInt("count()"), "Gemiddelde Tijd:", TimerHandler.toText((int) Math.round(rs.getDouble("avg(time)"))), this);
+    public Runner getRunner(String name){
+        try {
+            getRunner.setString(1, name);
+            getRunnerName.setString(1, name);
+            ResultSet rs = getRunner.executeQuery();
+            return new Runner(getRunnerName.executeQuery().getString("name"), rs.getInt("count()"), "Gemiddelde Tijd:", TimerHandler.toText((int) Math.round(rs.getDouble("avg(time)"))), this);
+        } catch (SQLException e) {
+            return null;
+        }
     }
 
     // check if the given runner name is in the database

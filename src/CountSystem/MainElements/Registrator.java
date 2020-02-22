@@ -107,16 +107,14 @@ public class Registrator extends VBox {
 
     // setup a new runner if it is already in the database, else start the new runner setup
     private void processRunner(ActionEvent actionEvent) {
-        Runner runner;
         try {
-            runner = database.getRunner(runnerTextField.getText());
-        } catch (SQLException e) {
+            Runner runner = database.getRunner(runnerTextField.getText());
+            countSystem.addRunnerToQueue(runner);
+            runnerTextField.clear();
+            deactivateNewRunnerRegistration(); // if the registration was activated by a typo
+        } catch (NullPointerException e) {
             activateNewRunnerRegistration();
-            return;
         }
-        countSystem.addRunnerToQueue(runner);
-        runnerTextField.clear();
-        deactivateNewRunnerRegistration(); // if the registration was activated by a typo
     }
 
     // start the registration of a new runner
