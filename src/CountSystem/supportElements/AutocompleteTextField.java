@@ -28,7 +28,8 @@ public class AutocompleteTextField extends TextField {
     public AutocompleteTextField(Function<String, Collection<String>> func) {
         super();
         getCompletions = func;
-
+        // prevent completions from hijacking the code being executed on pressing enter
+        completions.onActionProperty().bind(onActionProperty());
         // the outermost lambda expression gets converted into a changeListener
         textProperty().addListener((observableValue, s, t1) -> { // s is old value, t1 is new value
             if (!getText().equals("")) {

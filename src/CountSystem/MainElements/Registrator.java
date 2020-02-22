@@ -12,7 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-import java.util.Objects;
+import java.sql.SQLException;
 
 // adds interface for selecting the database
 // adds interface for registering runners
@@ -25,6 +25,7 @@ public class Registrator extends VBox {
     private RunDatabase database;
     private Button newButton;
     private Button selectButton;
+    private boolean registrationActive = false;
 
     public Registrator(CountSystem countSystem, RunDatabase database) {
         super();
@@ -70,6 +71,7 @@ public class Registrator extends VBox {
         // give the friend text field a red accent to indicate a non-existing runner, if the runner does not exist
         if (database.containsRunner(runnerTextField.getText())) {
             processRunner(actionEvent);
+            deactivateNewRunnerRegistration();
             return;
         }
         if (friendTextField.getText().equals("") || database.containsRunner(friendTextField.getText())) {
@@ -82,7 +84,7 @@ public class Registrator extends VBox {
         if (database.containsGroup(groupTextField.getText())) {
             // setup new runner
             database.addRunner(runnerTextField.getText(), groupTextField.getText(), friendTextField.getText());
-            countSystem.addRunnerToQueue(database.getRunner(runnerTextField.getText()));
+            processRunner(actionEvent);
             // clear all registration fields
             deactivateNewRunnerRegistration();
             runnerTextField.requestFocus();
@@ -105,29 +107,38 @@ public class Registrator extends VBox {
 
     // setup a new runner if it is already in the database, else start the new runner setup
     private void processRunner(ActionEvent actionEvent) {
-        Runner runner = database.getRunner(runnerTextField.getText());
-        if (Objects.nonNull(runner)) {
-            countSystem.addRunnerToQueue(runner);
-            runnerTextField.clear();
-            deactivateNewRunnerRegistration(); // if the registration was activated by a typo
-        } else {
+        Runner runner;
+        try {
+            runner = database.getRunner(runnerTextField.getText());
+        } catch (SQLException e) {
             activateNewRunnerRegistration();
+            return;
         }
+        countSystem.addRunnerToQueue(runner);
+        runnerTextField.clear();
+        deactivateNewRunnerRegistration(); // if the registration was activated by a typo
     }
 
     // start the registration of a new runner
     private void activateNewRunnerRegistration() {
-        getChildren().addAll(friendTextField, groupTextField);
+        if (!registrationActive) {
+            getChildren().addAll(friendTextField, groupTextField);
+            registrationActive = true;
+        }
     }
 
     // end the registration of a new runner
     private void deactivateNewRunnerRegistration() {
-        getChildren().removeAll(friendTextField, groupTextField);
-        groupTextField.setStyle("");
-        friendTextField.setStyle("");
-        groupTextField.clear();
-        runnerTextField.clear();
-        friendTextField.clear();
+        if (registrationActive){
+            getChildren().removeAll(friendTextField, groupTextField);
+            groupTextField.setStyle("");
+            friendTextField.setStyle("");
+            groupTextField.clear();
+            runnerTextField.clear();
+            friendTextField.clear();
+            registrationActive = false;
+        }
+
     }
 
     // switch from database selection to runner registration mode

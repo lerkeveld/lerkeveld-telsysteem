@@ -138,7 +138,7 @@ public class RunDatabase {
     public Collection<String> searchRunners(String name) {
         try {
             ArrayList<String> items = new ArrayList<>();
-            searchRunner.setString(1, "%" + name + "%");
+            searchRunner.setString(1, name + "%");
             ResultSet rs = searchRunner.executeQuery();
             while (rs.next()) {
                 items.add(rs.getString("name"));
@@ -161,18 +161,12 @@ public class RunDatabase {
     }
 
     // get a Runner object based on the given name
-    public Runner getRunner(String name) {
+    public Runner getRunner(String name) throws SQLException {
         // returns null if the given runner does not exist.
-        if (!containsRunner(name)) return null;
-        try {
-            getRunner.setString(1, name);
-            getRunnerName.setString(1, name);
-            ResultSet rs = getRunner.executeQuery();
-            return new Runner(getRunnerName.executeQuery().getString("name"), rs.getInt("count()"), "Gemiddelde Tijd:", TimerHandler.toText((int) Math.round(rs.getDouble("avg(time)"))), this);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+        getRunner.setString(1, name);
+        getRunnerName.setString(1, name);
+        ResultSet rs = getRunner.executeQuery();
+        return new Runner(getRunnerName.executeQuery().getString("name"), rs.getInt("count()"), "Gemiddelde Tijd:", TimerHandler.toText((int) Math.round(rs.getDouble("avg(time)"))), this);
     }
 
     // check if the given runner name is in the database
@@ -190,7 +184,7 @@ public class RunDatabase {
     public Collection<String> searchGroups(String name) {
         try {
             ArrayList<String> items = new ArrayList<>();
-            searchGroup.setString(1, "%" + name + "%");
+            searchGroup.setString(1, name + "%");
             ResultSet rs = searchGroup.executeQuery();
             while (rs.next()) {
                 items.add(rs.getString("name"));
