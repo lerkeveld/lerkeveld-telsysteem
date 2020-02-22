@@ -28,8 +28,6 @@ public class AutocompleteTextField extends TextField {
     public AutocompleteTextField(Function<String, Collection<String>> func) {
         super();
         getCompletions = func;
-        // prevent completions from hijacking the code being executed on pressing enter
-        completions.onActionProperty().bind(onActionProperty());
         // the outermost lambda expression gets converted into a changeListener
         textProperty().addListener((observableValue, s, t1) -> { // s is old value, t1 is new value
             if (!getText().equals("")) {
@@ -46,7 +44,7 @@ public class AutocompleteTextField extends TextField {
                     completions.getItems().add(item);
                 });
                 // do not show if the size is too large
-                if (completions.getItems().size() < MAXSIZE)
+                if (completions.getItems().size() < MAXSIZE && !(completions.getItems().size() == 1 && getText().equalsIgnoreCase(((Label) ((CustomMenuItem) completions.getItems().get(0)).getContent()).getText())))
                     completions.show(AutocompleteTextField.this, Side.BOTTOM, 0, 0);
                 else {
                     completions.hide();
