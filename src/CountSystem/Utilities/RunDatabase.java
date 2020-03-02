@@ -27,6 +27,7 @@ public class RunDatabase {
     private PreparedStatement insertRunnerNoFriend;
     private PreparedStatement insertLap;
     private PreparedStatement getLaps;
+    private volatile boolean popupOn = false;
 
     public RunDatabase(CountSystem owner) {
         super();
@@ -36,12 +37,12 @@ public class RunDatabase {
 
     // select an existing database, to be used by the application
     public void selectDatabase() {
+        if (popupOn) return; // prevent multiple selection windows
+        popupOn = true;
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("*SQLite database", "*.db"));
         fileChooser.setTitle("Database chooser");
         Stage popup = new Stage();
-        popup.initModality(Modality.APPLICATION_MODAL); //TODO should block all events in other windows, but does not seem to.
-        popup.initOwner(owner.getWindow());
         File file = fileChooser.showOpenDialog(popup);
         if (!Objects.isNull(file)) {
             try {
@@ -52,16 +53,17 @@ public class RunDatabase {
                 e.printStackTrace();
             }
         }
+        popupOn = false;
     }
 
     // create new database, to be used by the application, and save it in the user defined location
     public void newDatabase() {
+        if (popupOn) return; // prevent multiple selection windows
+        popupOn = true;
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("*SQLite database", "*.db"));
         fileChooser.setTitle("Database chooser");
         Stage popup = new Stage();
-        popup.initModality(Modality.APPLICATION_MODAL); //TODO should block all events in other windows, but does not seem to.
-        popup.initOwner(owner.getWindow());
         File file = fileChooser.showSaveDialog(popup);
         if (!Objects.isNull(file)) {
             if (!file.getName().contains(".")) {
@@ -77,40 +79,25 @@ public class RunDatabase {
                 e.printStackTrace();
             }
         }
+        popupOn = false;
     }
 
     // setup the main tables and elements of the database
     private void buildDatabase() throws SQLException {
         database.prepareStatement(
-                "CREATE TABLE \"groups\" (\n" +
-                        "\t\"name\"\tTEXT NOT NULL UNIQUE,\n" +
-                        "\tPRIMARY KEY(\"name\")\n" +
-                        ");"
+                "CREATE TABLE groups (name TEXT NOT NULL UNIQUE, PRIMARY KEY(name));"
         ).executeUpdate();
 
         database.prepareStatement(
-                "INSERT INTO \"groups\"\n" +
-                        "VALUES (\"Extern\");"
+                "INSERT INTO groups VALUES ('Extern');"
         ).executeUpdate();
 
         database.prepareStatement(
-                "CREATE TABLE \"runners\" (\n" +
-                        "\t\"name\"\tTEXT NOT NULL UNIQUE,\n" +
-                        "\t\"friend\"\tTEXT,\n" +
-                        "\t\"group\"\tTEXT NOT NULL DEFAULT 'Extern',\n" +
-                        "\tPRIMARY KEY(\"name\"),\n" +
-                        "\tFOREIGN KEY(\"friend\") REFERENCES \"runners\"(\"name\")\n" +
-                        "\tFOREIGN KEY(\"group\") REFERENCES \"groups\"(\"name\")\n" +
-                        ");"
+                "CREATE TABLE runners (name TEXT NOT NULL UNIQUE, friend TEXT, \"group\" TEXT NOT NULL DEFAULT 'Extern', PRIMARY KEY(name), FOREIGN KEY(friend) REFERENCES runners(name) FOREIGN KEY(\"group\") REFERENCES groups(name));"
         ).executeUpdate();
 
         database.prepareStatement(
-                "CREATE TABLE \"laps\" (\n" +
-                        "\t\"id\"\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,\n" +
-                        "\t\"time\"\tINTEGER NOT NULL,\n" +
-                        "\t\"runner\"\tTEXT NOT NULL,\n" +
-                        "\tFOREIGN KEY(\"runner\") REFERENCES \"runners\"(\"name\")\n" +
-                        ");"
+                "CREATE TABLE laps (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, time INTEGER NOT NULL, runner TEXT NOT NULL, FOREIGN KEY(runner) REFERENCES runners(name));"
         ).executeUpdate();
     }
 

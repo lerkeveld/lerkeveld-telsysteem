@@ -53,13 +53,11 @@ public class Registrator extends VBox {
         // later, an AutocompleteTextField will be used to add runners
         runnerTextField = new AutocompleteTextField(database::searchRunners);
         runnerTextField.setOnAction(this::processRunner);
-        // todo tab as completion with uppermost suggestion
         runnerTextField.setPromptText("voeg loper toe");
 
         // new runner can be added with two other AutocompleteTextFields
         groupTextField = new AutocompleteTextField(database::searchGroups);
         friendTextField = new AutocompleteTextField(database::searchRunners);
-        // todo tab as completion with uppermost suggestion
         groupTextField.setOnAction(this::processGroup);
         friendTextField.setOnAction(this::processFriend);
         groupTextField.setPromptText("group");
