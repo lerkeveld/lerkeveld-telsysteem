@@ -1,7 +1,7 @@
 # lerkeveld-telsysteem
 
 ##External Libraries:
-- JavaFX
+- JavaFX14
 - sqlite-jbdc
 
 ##Extra resources
@@ -9,4 +9,4 @@
 
 
 ##VM options
-- --module-path "path\to\openjfx-13.0.1\javafx-sdk-13.0.1\lib" --add-modules javafx.controls
+- --module-path "path\to\javafx-sdk-14\lib" --add-modules javafx.controls

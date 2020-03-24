@@ -3,7 +3,6 @@ package CountSystem.Utilities;
 import CountSystem.CountSystem;
 import CountSystem.supportElements.Runner;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
