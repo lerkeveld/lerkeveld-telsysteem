@@ -3,11 +3,11 @@
 Setup:
 add the fontawesome fa-solid-900.ttf file to src/main/resources
 
-Run the program in linux with :
+Run the program in linux with:
 ```
 ./gradlew run
 ```
-en in windows:
+and in windows:
 ```
 gradlew.bat run
 ```
