@@ -1,12 +1,24 @@
 # lerkeveld-telsysteem
 
-##External Libraries:
-- JavaFX14
-- sqlite-jbdc
+Setup:
+add the fontawesome fa-solid-900.ttf file to src/main/resources
 
-##Extra resources
-- FontAwesome solid font: fa-solid-900.ttf
+Run the program in linux with :
+```
+./gradlew run
+```
+en in windows:
+```
+gradlew.bat run
+```
 
+Build the application jar in java with
+```
+./gradlew jar
+```
+and in windows:
+```
+gradlew.bat jar
+```
 
-##VM options
-- --module-path "path\to\javafx-sdk-14\lib" --add-modules javafx.controls
+The build jar is stored in build/libs

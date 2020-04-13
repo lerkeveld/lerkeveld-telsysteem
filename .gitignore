@@ -1,5 +1,16 @@
-.idea/*
-out/*
-resources/*
-*.iml
-lib/*
+# ignore everything
+/*
+# except the gradle files
+!/gradle
+!build.gradle
+!gradlew
+!gradlew.bat
+!settings.gradle
+# and the source code
+!/src
+# and some more files
+!.gitignore
+!README.md
+
+# some resources can't be distributed
+/src/main/resources/*.ttf
