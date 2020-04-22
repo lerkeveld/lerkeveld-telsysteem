@@ -2,6 +2,7 @@ package lerkeveld.telsysteem.countSystem.mainElements;
 
 import lerkeveld.telsysteem.countSystem.supportElements.QueuedRunner;
 import lerkeveld.telsysteem.countSystem.supportElements.Runner;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
@@ -20,6 +21,9 @@ public class RunnerQueue extends ScrollPane {
         super();
 
         // ScrollPane layout
+        setStyle("-fx-border-color: Gainsboro; -fx-border-insets: 0; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-color:transparent;");
+
+        // ScrollPane content layout
         setFitToWidth(true);
         setContent(queue);
 

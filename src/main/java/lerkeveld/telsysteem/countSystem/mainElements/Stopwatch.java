@@ -43,7 +43,7 @@ public class Stopwatch extends VBox {
         // layout of the VBox
         setPadding(new Insets(10, 10, 10, 10));
         setAlignment(Pos.TOP_CENTER);
-        setStyle("-fx-border-color: Gainsboro; -fx-border-insets: 0; -fx-border-width: 2; -fx-border-radius: 10;");
+        setStyle("-fx-border-color: Gainsboro; -fx-border-insets: 0; -fx-border-width: 2; -fx-border-radius: 5;");
         setSpacing(10);
 
         // get an empty runner template, can not use setRunner(), as it requires the VBox to be populated.

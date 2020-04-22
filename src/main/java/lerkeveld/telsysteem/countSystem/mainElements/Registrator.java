@@ -32,7 +32,7 @@ public class Registrator extends VBox {
         // layout of the VBox
         setPadding(new Insets(10, 10, 10, 10));
         setAlignment(Pos.TOP_CENTER);
-        setStyle("-fx-border-color: Gainsboro; -fx-border-insets: 0; -fx-border-width: 2; -fx-border-radius: 10;");
+        setStyle("-fx-border-color: Gainsboro; -fx-border-insets: 0; -fx-border-width: 2; -fx-border-radius: 5;");
         setSpacing(10);
 
         // starts out with two buttons in a HBox, to get a database
@@ -102,13 +102,16 @@ public class Registrator extends VBox {
 
     // setup a new runner if it is already in the database, else start the new runner setup
     private void processRunner(ActionEvent actionEvent) {
-        try {
-            countSystem.addRunnerToQueue(database.getRunner(runnerTextField.getText()));
-            runnerTextField.clear();
-            deactivateNewRunnerRegistration(); // if the registration was activated by a typo
-        } catch (NullPointerException e) {
-            activateNewRunnerRegistration();
-            friendTextField.requestFocus();
+        // don't do anything if the textfield is empty
+        if (!runnerTextField.getText().equals("")){
+            try {
+                countSystem.addRunnerToQueue(database.getRunner(runnerTextField.getText()));
+                runnerTextField.clear();
+                deactivateNewRunnerRegistration(); // if the registration was activated by a typo
+            } catch (NullPointerException e) {
+                activateNewRunnerRegistration();
+                friendTextField.requestFocus();
+            }
         }
     }
 

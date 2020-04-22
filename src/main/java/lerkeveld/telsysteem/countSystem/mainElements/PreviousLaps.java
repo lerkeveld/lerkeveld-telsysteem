@@ -19,7 +19,7 @@ public class PreviousLaps extends VBox {
 
         // VBox layout
         setAlignment(Pos.TOP_CENTER);
-        setStyle("-fx-border-color: Gainsboro; -fx-border-insets: 0; -fx-border-width: 2; -fx-border-radius: 10;");
+        setStyle("-fx-border-color: Gainsboro; -fx-border-insets: 0; -fx-border-width: 2; -fx-border-radius: 5;");
         setPadding(new Insets(verticalPadding, horizontalPadding, verticalPadding, horizontalPadding));
         setSpacing(verticalSpacing);
 
