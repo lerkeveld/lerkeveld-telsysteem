@@ -30,8 +30,10 @@ public class Stopwatch extends VBox {
     // the button that starts a new lap
     private Button button = new Button("Start");
 
-    // whether a lap is going or not
+    // handler for the animations of the timer
     private TimerHandler timerHandler = new TimerHandler(timer);
+
+    // it's parent object
     private CountSystem countSystem;
 
     public Stopwatch(CountSystem countSystem) {
@@ -65,7 +67,8 @@ public class Stopwatch extends VBox {
         timeline.setCycleCount(Timeline.INDEFINITE);
     }
 
-    // start a new lap and stop the previous lap if it is not stopped
+    // start a new lap and stop the previous lap, if it is not stopped
+    // returns the runner that ran the previous lap
     public Runner startNewLap(Runner runner) {
         Runner oldRunner = stopCurrentLap();
         timerHandler = new TimerHandler(timer);
@@ -94,6 +97,7 @@ public class Stopwatch extends VBox {
         getChildren().set(1, r);
     }
 
+    // get the current runner
     public Runner getRunner(){
         return runner;
     }

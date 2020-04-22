@@ -81,11 +81,10 @@ public class Runner extends VBox {
         defaultTextSize *= s;
     }
 
-    //  increment the lapcount of this runner
+    //  increment the lap count of this runner
     public void updateLapCount() {
         // does not work on empty runner
-        if (isEmpty()) return;
-        lapCount.setText("" + database.getLapCount(nameLabel.getText()));
+        if (!isEmpty()) lapCount.setText("" + database.getLapCount(nameLabel.getText()));
     }
 
     // set the extra information of this runner with the given name and value

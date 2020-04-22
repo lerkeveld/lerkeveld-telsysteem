@@ -136,6 +136,7 @@ public class RunDatabase {
         }
     }
 
+    // get the lap count of the given runner
     public int getLapCount(String name){
         try {
             getLaps.setString(1, name);

@@ -52,12 +52,12 @@ public class Registrator extends VBox {
         runnerTextField.setOnAction(this::processRunner);
         runnerTextField.setPromptText("voeg loper toe");
 
-        // new runner can be added with two other AutocompleteTextFields
+        // new runner can be added with two extra AutocompleteTextFields
         groupTextField = new AutocompleteTextField(database::searchGroups);
         friendTextField = new AutocompleteTextField(database::searchRunners);
         groupTextField.setOnAction(this::processGroup);
         friendTextField.setOnAction(this::processFriend);
-        groupTextField.setPromptText("group");
+        groupTextField.setPromptText("groep");
         friendTextField.setPromptText("vriend");
     }
 
@@ -108,6 +108,7 @@ public class Registrator extends VBox {
             deactivateNewRunnerRegistration(); // if the registration was activated by a typo
         } catch (NullPointerException e) {
             activateNewRunnerRegistration();
+            friendTextField.requestFocus();
         }
     }
 

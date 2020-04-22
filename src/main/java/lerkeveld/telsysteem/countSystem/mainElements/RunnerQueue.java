@@ -49,7 +49,7 @@ public class RunnerQueue extends ScrollPane {
     }
 
     // move the given QueuedRunner one up in the queue
-    // the logical boundary conditions apply
+    // can't move further than first place
     public void moveUp(QueuedRunner queuedRunner) {
         int pos1 = queuedRunner.getPosition() - 1;
         int pos2 = queuedRunner.getPosition() - 2;
@@ -76,7 +76,7 @@ public class RunnerQueue extends ScrollPane {
     }
 
     // move the given QueuedRunner one down in the queue
-    // the logical boundary conditions apply
+    // can't move past last place
     public void moveDown(QueuedRunner queuedRunner) {
         int pos1 = queuedRunner.getPosition() - 1;
         int pos2 = queuedRunner.getPosition();
@@ -97,6 +97,7 @@ public class RunnerQueue extends ScrollPane {
         runners.forEach(runner -> runner.scale(s));
     }
 
+    // update the number of laps a runner has run, if it is in the queue multiple times
     public void updateRunner(String name) {
         runners.stream().filter(queuedRunner -> queuedRunner.getName().equals(name)).forEach(QueuedRunner::updateLapCount);
     }

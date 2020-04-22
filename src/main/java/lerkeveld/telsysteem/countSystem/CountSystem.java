@@ -92,8 +92,10 @@ public class CountSystem extends Scene {
         Runner nextRunner = runnerQueue.pop();
         Runner prevRunner = Objects.isNull(nextRunner) ? stopWatch.stopCurrentLap() : stopWatch.startNewLap(nextRunner);
         previousLaps.pushLap(prevRunner);
-        runnerQueue.updateRunner(prevRunner.getName()); // to update the lapcount of runners that just ran and are in the queue
-        if (!Objects.isNull(nextRunner)) stopWatch.getRunner().updateLapCount();
+        // update the lap count of runners that just ran and are in the queue
+        runnerQueue.updateRunner(prevRunner.getName());
+        // update the lap count of the new runner
+        if (!Objects.isNull(nextRunner)) nextRunner.updateLapCount();
     }
 
     // interface between runnerQueue and database
