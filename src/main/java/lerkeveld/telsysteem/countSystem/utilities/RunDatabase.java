@@ -2,6 +2,8 @@ package lerkeveld.telsysteem.countSystem.utilities;
 
 import lerkeveld.telsysteem.countSystem.CountSystem;
 import lerkeveld.telsysteem.countSystem.supportElements.Runner;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -46,8 +48,16 @@ public class RunDatabase {
         if (!Objects.isNull(file)) {
             try {
                 connectToDatabase(file);
-                setupPreparedStatements();
-                owner.changeToRunnerRegistration();
+                if (checkDatabase()){
+                    setupPreparedStatements();
+                    owner.changeToRunnerRegistration();
+                }
+                else {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("De gegeven database heeft niet de correcte structuur!");
+                    alert.showAndWait();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -55,7 +65,8 @@ public class RunDatabase {
         popupOn = false;
     }
 
-    // create new database, to be used by the application, and save it in the user defined location
+    // create new database, to be used by the application, and save it in the user
+    // defined location
     public void newDatabase() {
         if (popupOn) return; // prevent multiple selection windows
         popupOn = true;
@@ -103,6 +114,39 @@ public class RunDatabase {
     // setup connection to database stored in the given file
     private void connectToDatabase(File file) throws SQLException {
         database = DriverManager.getConnection("jdbc:sqlite:" + file.getAbsolutePath());
+    }
+
+    // returns whether the database has the correct structure
+    // this is a basic check
+    private boolean checkDatabase(){
+        try{
+            // check laps table structure
+            ResultSet rs = database.prepareStatement("pragma table_info('laps')").executeQuery();
+            rs.next(); // moves the cursor to the first row, even though it is already at the first row
+            if (!rs.getString("name").equals("id")) return false;
+            rs.next(); // moves the cursor to the next row
+            if (!rs.getString("name").equals("time")) return false;
+            rs.next();
+            if (!rs.getString("name").equals("runner")) return false;
+            // check runners table structure
+            rs = database.prepareStatement("pragma table_info('runners')").executeQuery();
+            rs.next();
+            if (!rs.getString("name").equals("name")) return false;
+            rs.next();
+            if (!rs.getString("name").equals("friend")) return false;
+            rs.next();
+            if (!rs.getString("name").equals("group")) return false;
+            // check groups table structure
+            rs = database.prepareStatement("pragma table_info('groups')").executeQuery();
+            rs.next();
+            if (!rs.getString("name").equals("name")) return false;
+            
+            // all checks cleared
+            return true;
+        }
+        catch(SQLException e){
+            return false;
+        }
     }
 
     // setup the different prepared statements that require user input
