@@ -19,6 +19,7 @@ public class App extends Application {
         primaryStage.setHeight(900);
         primaryStage.getIcons().add(new Image(this.getClass().getClassLoader().getResourceAsStream("icon.png")));
         primaryStage.setTitle("Lerkeveld Telsysteem 24-uren loop");
+        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 }
