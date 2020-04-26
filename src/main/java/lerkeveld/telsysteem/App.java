@@ -17,7 +17,7 @@ public class App extends Application {
         primaryStage.setScene(new CountSystem());
         primaryStage.setWidth(1080);
         primaryStage.setHeight(720);
-        primaryStage.getIcons().add(new Image(this.getClass().getClassLoader().getResourceAsStream("icon.png")));
+        primaryStage.getIcons().add(new Image(this.getClass().getClassLoader().getResourceAsStream("mainIcon.png")));
         primaryStage.setTitle("Lerkeveld Telsysteem 24-uren loop");
         primaryStage.setMaximized(true);
         primaryStage.show();

@@ -1,12 +1,16 @@
 package lerkeveld.telsysteem.countSystem.mainElements;
 
+import java.util.Objects;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import lerkeveld.telsysteem.countSystem.CountSystem;
+import lerkeveld.telsysteem.countSystem.supportElements.ExtraOptions;
 import lerkeveld.telsysteem.countSystem.supportElements.Registrator;
 import lerkeveld.telsysteem.countSystem.utilities.RunDatabase;
 
@@ -15,11 +19,13 @@ public class Registration extends VBox {
     private Button extraOptionsButton;
     private Button newButton;
     private Button selectButton;
+    private ExtraOptions extraOptions = null;
 
     public Registration(CountSystem countSystem, RunDatabase database){
         super();
         registrator = new Registrator(countSystem, database);
-        extraOptionsButton = new Button("extra opties");
+        extraOptionsButton = new Button("Extra Opties");
+        extraOptionsButton.setOnAction(actionEvent -> popupExtraOptions());
 
         // VBox Layout
         setPadding(new Insets(10, 10, 10, 10));
@@ -44,6 +50,14 @@ public class Registration extends VBox {
 
         // populate VBox
         getChildren().setAll(hbox);
+    }
+
+    private void popupExtraOptions() {
+        // roundabout way to set the owner of the popup, as is it not defined on creation of this registrator
+        if (Objects.isNull(extraOptions)){
+            extraOptions = new ExtraOptions((Stage) getScene().getWindow());
+        }
+        extraOptions.show();
     }
 
     // switch from database selection to runner registration mode
