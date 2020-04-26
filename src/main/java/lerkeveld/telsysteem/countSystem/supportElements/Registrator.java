@@ -1,15 +1,10 @@
-package lerkeveld.telsysteem.countSystem.mainElements;
+package lerkeveld.telsysteem.countSystem.supportElements;
 
 import lerkeveld.telsysteem.countSystem.CountSystem;
 import lerkeveld.telsysteem.countSystem.utilities.RunDatabase;
-import lerkeveld.telsysteem.countSystem.supportElements.AutocompleteTextField;
 import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 
 // adds interface for selecting the database
 // adds interface for registering runners
@@ -19,8 +14,6 @@ public class Registrator extends VBox {
     private AutocompleteTextField friendTextField;
     private CountSystem countSystem;
     private RunDatabase database;
-    private Button newButton;
-    private Button selectButton;
     private boolean registrationActive = false;
 
     public Registrator(CountSystem countSystem, RunDatabase database) {
@@ -29,24 +22,10 @@ public class Registrator extends VBox {
         this.database = database;
 
         // layout of the VBox
-        setPadding(new Insets(10, 10, 10, 10));
         setAlignment(Pos.TOP_CENTER);
-        setStyle("-fx-border-color: Gainsboro; -fx-border-insets: 0; -fx-border-width: 2; -fx-border-radius: 5;");
         setSpacing(10);
 
-        // starts out with two buttons in a HBox, to get a database
-        HBox hbox = new HBox();
-        getChildren().add(hbox);
-        hbox.prefWidthProperty().bind(widthProperty().subtract(20));
-        selectButton = new Button("selecteer database");
-        newButton = new Button("nieuwe database");
-        selectButton.setOnAction(actionEvent -> database.selectDatabase());
-        newButton.setOnAction(actionEvent -> database.newDatabase());
-        selectButton.prefWidthProperty().bind(hbox.widthProperty().divide(2));
-        newButton.prefWidthProperty().bind(hbox.widthProperty().divide(2));
-        hbox.getChildren().setAll(selectButton, newButton);
-
-        // later, an AutocompleteTextField will be used to add runners
+        // an AutocompleteTextField will be used to add runners
         runnerTextField = new AutocompleteTextField(database::searchRunners);
         runnerTextField.setOnAction(this::processRunner);
         runnerTextField.setPromptText("voeg loper toe");
@@ -55,6 +34,9 @@ public class Registrator extends VBox {
         friendTextField = new AutocompleteTextField(database::searchRunners);
         friendTextField.setOnAction(this::processFriend);
         friendTextField.setPromptText("vriend");
+
+        // populate vBox
+        getChildren().setAll(runnerTextField);
     }
 
     // check if friend exist, if not, make the text field red, else add new runner
@@ -108,17 +90,8 @@ public class Registrator extends VBox {
 
     }
 
-    // switch from database selection to runner registration mode
-    public void changeToRunnerRegistration() {
-        // basic runner registration consists of an autocomplete text field
-        getChildren().setAll(runnerTextField);
-
-    }
-
     // scale all elements of this registrator with the given scale s
     public void scale(double s) {
-        newButton.setFont(new Font(newButton.getFont().getName(), newButton.getFont().getSize() * s));
-        selectButton.setFont(new Font(selectButton.getFont().getName(), selectButton.getFont().getSize() * s));
         runnerTextField.scale(s);
         friendTextField.scale(s);
     }

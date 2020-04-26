@@ -1,7 +1,7 @@
 package lerkeveld.telsysteem.countSystem;
 
 import lerkeveld.telsysteem.countSystem.mainElements.PreviousLaps;
-import lerkeveld.telsysteem.countSystem.mainElements.Registrator;
+import lerkeveld.telsysteem.countSystem.mainElements.Registration;
 import lerkeveld.telsysteem.countSystem.mainElements.RunnerQueue;
 import lerkeveld.telsysteem.countSystem.mainElements.Stopwatch;
 import lerkeveld.telsysteem.countSystem.utilities.RunDatabase;
@@ -23,7 +23,7 @@ public class CountSystem extends Scene {
     private double verticalSpacing = 10;
 
     private Stopwatch stopWatch;
-    private Registrator registrator;
+    private Registration registration;
     private PreviousLaps previousLaps;
     private RunnerQueue runnerQueue;
     private RunDatabase database;
@@ -55,11 +55,11 @@ public class CountSystem extends Scene {
 
         // populate vBoxes
         stopWatch = new Stopwatch(this);
-        registrator = new Registrator(this, database);
+        registration = new Registration(this, database);
         previousLaps = new PreviousLaps();
         runnerQueue = new RunnerQueue();
         vBox1.getChildren().setAll(stopWatch, previousLaps);
-        vBox2.getChildren().setAll(registrator, runnerQueue);
+        vBox2.getChildren().setAll(registration, runnerQueue);
 
         // set layout of main elements
         stopWatch.prefHeightProperty().bind(vBox1.heightProperty().subtract(verticalSpacing).divide(2));
@@ -68,8 +68,8 @@ public class CountSystem extends Scene {
         previousLaps.prefWidthProperty().bind(vBox1.widthProperty());
         runnerQueue.prefHeightProperty().bind(vBox2.heightProperty().subtract(verticalSpacing).divide(2));
         runnerQueue.prefWidthProperty().bind(vBox2.widthProperty());
-        registrator.prefHeightProperty().bind(vBox2.heightProperty().subtract(verticalSpacing).divide(2));
-        registrator.prefWidthProperty().bind(vBox2.widthProperty());
+        registration.prefHeightProperty().bind(vBox2.heightProperty().subtract(verticalSpacing).divide(2));
+        registration.prefWidthProperty().bind(vBox2.widthProperty());
 
         // set listener that change the scale of all elements based on the height of the frame
         this.heightProperty().addListener((observableValue, s, t1) -> scale(t1.doubleValue() / s.doubleValue()));
@@ -81,7 +81,7 @@ public class CountSystem extends Scene {
             stopWatch.scale(s);
             previousLaps.scale(s);
             runnerQueue.scale(s);
-            registrator.scale(s);
+            registration.scale(s);
             Runner.scaleNewRunners(s);
             QueuedRunner.scaleNewQueuedRunners(s);
         }
@@ -105,7 +105,7 @@ public class CountSystem extends Scene {
 
     // interface between database and runnerRegistration
     public void changeToRunnerRegistration() {
-        registrator.changeToRunnerRegistration();
+        registration.changeToRunnerRegistration();
     }
 
     // interface between runnerRegistration and runnerQueue

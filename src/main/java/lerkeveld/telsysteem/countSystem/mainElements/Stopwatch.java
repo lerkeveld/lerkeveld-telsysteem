@@ -42,7 +42,7 @@ public class Stopwatch extends VBox {
 
         // layout of the VBox
         setPadding(new Insets(10, 10, 10, 10));
-        setAlignment(Pos.TOP_CENTER);
+        setAlignment(Pos.BOTTOM_CENTER);
         setStyle("-fx-border-color: Gainsboro; -fx-border-insets: 0; -fx-border-width: 2; -fx-border-radius: 5;");
         setSpacing(10);
 
