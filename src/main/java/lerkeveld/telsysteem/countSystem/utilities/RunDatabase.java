@@ -158,8 +158,8 @@ public class RunDatabase {
         checkRunner = database.prepareStatement("Select name from runners where name like ?");
         searchGroup = database.prepareStatement("Select name from groups where name like ?");
         checkGroup = database.prepareStatement("Select name from groups where name like ?");
-        insertRunnerNoFriend = database.prepareStatement("INSERT INTO runners (name, \"group\") values(?, ?)");
-        insertRunner = database.prepareStatement("INSERT INTO runners values(?, ?, ?)");
+        insertRunnerNoFriend = database.prepareStatement("INSERT INTO runners (name) values(?)");
+        insertRunner = database.prepareStatement("INSERT INTO runners (name, friend) values(?, ?)");
         insertLap = database.prepareStatement("INSERT INTO laps(runner, time) values(?, ?)");
         getLaps = database.prepareStatement("select count() from laps where runner like ?");
     }
@@ -242,11 +242,10 @@ public class RunDatabase {
     }
 
     // create a new runner in the database with the given name, group and friend
-    public void addRunner(String name, String group, String friend) {
+    public void addRunner(String name, String friend) {
         if (friend.equals("")) {
             try {
                 insertRunnerNoFriend.setString(1, name);
-                insertRunnerNoFriend.setString(2, group);
                 insertRunnerNoFriend.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -255,7 +254,6 @@ public class RunDatabase {
             try {
                 insertRunner.setString(1, name);
                 insertRunner.setString(2, friend);
-                insertRunner.setString(3, group);
                 insertRunner.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();

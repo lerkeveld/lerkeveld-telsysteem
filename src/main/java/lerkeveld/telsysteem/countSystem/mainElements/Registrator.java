@@ -15,7 +15,6 @@ import javafx.scene.text.Font;
 // adds interface for registering runners
 public class Registrator extends VBox {
 
-    private AutocompleteTextField groupTextField;
     private AutocompleteTextField runnerTextField;
     private AutocompleteTextField friendTextField;
     private CountSystem countSystem;
@@ -52,63 +51,37 @@ public class Registrator extends VBox {
         runnerTextField.setOnAction(this::processRunner);
         runnerTextField.setPromptText("voeg loper toe");
 
-        // new runner can be added with two extra AutocompleteTextFields
-        groupTextField = new AutocompleteTextField(database::searchGroups);
+        // new runner can be added with one extra AutocompleteTextFields
         friendTextField = new AutocompleteTextField(database::searchRunners);
-        groupTextField.setOnAction(this::processGroup);
         friendTextField.setOnAction(this::processFriend);
-        groupTextField.setPromptText("groep");
         friendTextField.setPromptText("vriend");
     }
 
-    // make sure the group field is correctly filled in on action of this field
-    private void processGroup(ActionEvent actionEvent) {
-        // give the friend text field a red accent to indicate a non-existing runner, if the runner does not exist
-        if (database.containsRunner(runnerTextField.getText())) {
-            processRunner(actionEvent);
-            deactivateNewRunnerRegistration();
-            return;
-        }
-        if (friendTextField.getText().equals("") || database.containsRunner(friendTextField.getText())) {
-            friendTextField.setStyle("");
-        } else {
-            friendTextField.setStyle("-fx-focus-color: #ff0000;");
-            friendTextField.requestFocus();
-            return;
-        }
-        if (database.containsGroup(groupTextField.getText())) {
-            // setup new runner
-            database.addRunner(runnerTextField.getText(), groupTextField.getText(), friendTextField.getText());
-            processRunner(actionEvent);
-            // clear all registration fields
-            deactivateNewRunnerRegistration();
-            runnerTextField.requestFocus();
-        } else {
-            groupTextField.setStyle("-fx-focus-color: #ff0000;"); // red accent if group does not exist
-        }
-    }
-
-    // check if friend exist, if not, make the text field red, else move on to group text field
+    // check if friend exist, if not, make the text field red, else add new runner
     private void processFriend(ActionEvent actionEvent) {
         if (database.containsRunner(runnerTextField.getText())) {
             processRunner(actionEvent);
             return;
         }
         if (friendTextField.getText().equals("") || database.containsRunner(friendTextField.getText())) {
-            friendTextField.setStyle("");
-            groupTextField.requestFocus();
-        } else friendTextField.setStyle("-fx-focus-color: #ff0000;");
+            // setup new runner
+            database.addRunner(runnerTextField.getText(), friendTextField.getText());
+            processRunner(actionEvent);
+            // clear all registration fields
+            deactivateNewRunnerRegistration();
+            runnerTextField.requestFocus();
+        } else friendTextField.setStyle("-fx-focus-color: #ff0000;"); // indicate non-existent runner
     }
 
     // setup a new runner if it is already in the database, else start the new runner setup
     private void processRunner(ActionEvent actionEvent) {
         // don't do anything if the textfield is empty
         if (!runnerTextField.getText().equals("")){
-            try {
+            if (database.containsRunner(runnerTextField.getText())) {
                 countSystem.addRunnerToQueue(database.getRunner(runnerTextField.getText()));
                 runnerTextField.clear();
                 deactivateNewRunnerRegistration(); // if the registration was activated by a typo
-            } catch (NullPointerException e) {
+            } else {
                 activateNewRunnerRegistration();
                 friendTextField.requestFocus();
             }
@@ -118,7 +91,7 @@ public class Registrator extends VBox {
     // start the registration of a new runner
     private void activateNewRunnerRegistration() {
         if (!registrationActive) {
-            getChildren().addAll(friendTextField, groupTextField);
+            getChildren().addAll(friendTextField);
             registrationActive = true;
         }
     }
@@ -126,10 +99,8 @@ public class Registrator extends VBox {
     // end the registration of a new runner
     private void deactivateNewRunnerRegistration() {
         if (registrationActive){
-            getChildren().removeAll(friendTextField, groupTextField);
-            groupTextField.setStyle("");
+            getChildren().removeAll(friendTextField);
             friendTextField.setStyle("");
-            groupTextField.clear();
             runnerTextField.clear();
             friendTextField.clear();
             registrationActive = false;
@@ -148,7 +119,6 @@ public class Registrator extends VBox {
     public void scale(double s) {
         newButton.setFont(new Font(newButton.getFont().getName(), newButton.getFont().getSize() * s));
         selectButton.setFont(new Font(selectButton.getFont().getName(), selectButton.getFont().getSize() * s));
-        groupTextField.scale(s);
         runnerTextField.scale(s);
         friendTextField.scale(s);
     }

@@ -2,7 +2,6 @@ package lerkeveld.telsysteem.countSystem.mainElements;
 
 import lerkeveld.telsysteem.countSystem.supportElements.QueuedRunner;
 import lerkeveld.telsysteem.countSystem.supportElements.Runner;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
